@@ -4,10 +4,10 @@
     <item
         android:id="@+id/nav_about"
         android:icon="@drawable/ic_device_inform_black_24px"
-        android:title="About app" />
+        android:title="@string/nav_about_app" />
     <item
         android:id="@+id/nav_exit"
         android:icon="@drawable/ic_exit_to_app_black_24px"
-        android:title="Tools" />
+        android:title="@string/nav_exit" />
 
 </menu>

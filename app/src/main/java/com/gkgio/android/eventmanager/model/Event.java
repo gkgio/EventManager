@@ -10,11 +10,12 @@ import java.io.Serializable;
 public class Event implements Serializable {
 
     private long id;
-    private int calendarId;
+    private long calendarId;
     private String title;
     private String description;
-    private int dateStart;
-    private int dateEnd;
+    private String timeZone;
+    private long dateStart;
+    private long dateEnd;
 
     public Event() {
     }
@@ -31,18 +32,21 @@ public class Event implements Serializable {
         if (dateStart != event.dateStart) return false;
         if (dateEnd != event.dateEnd) return false;
         if (title != null ? !title.equals(event.title) : event.title != null) return false;
-        return description != null ? description.equals(event.description) : event.description == null;
+        if (description != null ? !description.equals(event.description) : event.description != null)
+            return false;
+        return timeZone != null ? timeZone.equals(event.timeZone) : event.timeZone == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + calendarId;
+        result = 31 * result + (int) (calendarId ^ (calendarId >>> 32));
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + dateStart;
-        result = 31 * result + dateEnd;
+        result = 31 * result + (timeZone != null ? timeZone.hashCode() : 0);
+        result = 31 * result + (int) (dateStart ^ (dateStart >>> 32));
+        result = 31 * result + (int) (dateEnd ^ (dateEnd >>> 32));
         return result;
     }
 
@@ -53,14 +57,18 @@ public class Event implements Serializable {
                 ", calendarId=" + calendarId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", timeZone='" + timeZone + '\'' +
                 ", dateStart=" + dateStart +
                 ", dateEnd=" + dateEnd +
                 '}';
     }
 
     public void setId(long id) {
-
         this.id = id;
+    }
+
+    public void setCalendarId(long calendarId) {
+        this.calendarId = calendarId;
     }
 
     public void setTitle(String title) {
@@ -71,20 +79,24 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public void setDateStart(int dateStart) {
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public void setDateStart(long dateStart) {
         this.dateStart = dateStart;
     }
 
-    public void setDateEnd(int dateEnd) {
+    public void setDateEnd(long dateEnd) {
         this.dateEnd = dateEnd;
-    }
-
-    public void setCalendarId(int calendarId) {
-        this.calendarId = calendarId;
     }
 
     public long getId() {
         return id;
+    }
+
+    public long getCalendarId() {
+        return calendarId;
     }
 
     public String getTitle() {
@@ -95,15 +107,15 @@ public class Event implements Serializable {
         return description;
     }
 
-    public int getDateStart() {
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public long getDateStart() {
         return dateStart;
     }
 
-    public int getDateEnd() {
+    public long getDateEnd() {
         return dateEnd;
-    }
-
-    public int getCalendarId() {
-        return calendarId;
     }
 }

@@ -21,4 +21,6 @@
     <string name="hint_event_description">Описание</string>
     <string name="tv_event_description">Описание</string>
     <string name="btn_save_event">Сохранить</string>
+    <string name="nav_about_app">About app</string>
+    <string name="nav_exit">Exit</string>
 </resources>

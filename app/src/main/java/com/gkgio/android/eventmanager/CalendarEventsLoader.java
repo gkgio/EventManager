@@ -4,11 +4,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.AsyncTaskLoader;
@@ -29,14 +25,8 @@ public class CalendarEventsLoader extends AsyncTaskLoader<List<Event>> {
 
     private static final String TAG = "CalendarEventsLoader";
 
-    private EventsContentObserver eventsContentObserver;
-
     public CalendarEventsLoader(Context context) {
         super(context);
-        eventsContentObserver = new EventsContentObserver();
-        context.getContentResolver().registerContentObserver(
-                CalendarContract.Events.CONTENT_URI,
-                false, eventsContentObserver);
     }
 
     @Override
@@ -48,7 +38,6 @@ public class CalendarEventsLoader extends AsyncTaskLoader<List<Event>> {
     @Override
     protected void onReset() {
         super.onReset();
-        getContext().getContentResolver().unregisterContentObserver(eventsContentObserver);
     }
 
     @Override
@@ -76,17 +65,5 @@ public class CalendarEventsLoader extends AsyncTaskLoader<List<Event>> {
                     null, null, null, null);
         }
         return cursor;
-    }
-
-    private class EventsContentObserver extends ContentObserver {
-
-        public EventsContentObserver() {
-            super(new Handler(Looper.getMainLooper()));
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            onContentChanged();
-        }
     }
 }

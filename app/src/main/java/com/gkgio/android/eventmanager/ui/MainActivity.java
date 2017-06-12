@@ -1,7 +1,6 @@
 package com.gkgio.android.eventmanager.ui;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -167,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         builder.setTitle(R.string.dialog_what_action_event)
                 .setNeutralButton(R.string.dialog_delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteEvent(event);
+                        deleteEvent(event, position);
                         dialog.cancel();
                     }
                 })
@@ -189,9 +188,9 @@ public class MainActivity extends AppCompatActivity
         builder.create().show();
     }
 
-    private void deleteEvent(Event event) {
-        //eventRecyclerAdapter.deleteEvent(event);
-       final String[] selectionArgs = new String[]{Long.toString(event.getId())};
+    private void deleteEvent(Event event, int position) {
+        eventRecyclerAdapter.deleteEvent(position);
+        final String[] selectionArgs = new String[]{Long.toString(event.getId())};
         ContentResolver contentResolver = this.getContentResolver();
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
@@ -210,16 +209,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD) {
-                // eventRecyclerAdapter.setEvent((Event) data.getSerializableExtra(INTENT_EVENT_PARAM));
                 if (data != null) {
                     final Event event = (Event) data.getSerializableExtra(INTENT_EVENT_PARAM);
+                    eventRecyclerAdapter.setEvent(event);
                     insertEvent(event);
                 }
             } else if (requestCode == REQUEST_CODE_UPDATE) {
-                eventRecyclerAdapter.updateEvent((Event) data.getSerializableExtra(INTENT_EVENT_PARAM),
-                        data.getIntExtra(INTENT_POSITION_PARAM, -1));
+                if (data != null) {
+                    final Event event =(Event) data.getSerializableExtra(INTENT_EVENT_PARAM);
+                    eventRecyclerAdapter.updateEvent(event,
+                            data.getIntExtra(INTENT_POSITION_PARAM, -1));
+                }
             }
         }
     }
@@ -231,6 +233,7 @@ public class MainActivity extends AppCompatActivity
         values.put(CalendarContract.Events.DTSTART, event.getDateStart());
         values.put(CalendarContract.Events.DTEND, event.getDateEnd());
         values.put(CalendarContract.Events.TITLE, event.getTitle());
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, event.getTimeZone());
         values.put(CalendarContract.Events.CALENDAR_ID, event.getCalendarId());
         values.put(CalendarContract.Events.DESCRIPTION, event.getDescription());
         if (ActivityCompat.checkSelfPermission(this,

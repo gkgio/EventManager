@@ -1,9 +1,16 @@
 package com.gkgio.android.eventmanager.ui;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -154,14 +161,38 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
                 if (event != null) {
                     localEvent.setId(event.getId());
                     localEvent.setCalendarId(event.getCalendarId());
+                } else {
+                    TimeZone timeZone = TimeZone.getDefault();
+                    String timeZoneID = timeZone.getID();
+                    localEvent.setTimeZone(timeZoneID);
+                    //add calendar_id
+                    localEvent.setCalendarId(1);
+                    //add id to event
+                    ContentResolver resolver = AddOrUpdateEventActivity.this.getContentResolver();
+                    Uri uri = CalendarContract.Events.CONTENT_URI;
+                    Cursor cursor = null;
+                    try {
+                        if (ActivityCompat.checkSelfPermission(AddOrUpdateEventActivity.this,
+                                Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+                            cursor = resolver.query(uri, new String[]{"MAX(_id) as max_id"}, null, null, "_id");
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+                                final long maxId = cursor.getLong(cursor.getColumnIndex("max_id"));
+                                localEvent.setId(maxId);
+                            }
+                        }
+                    } finally {
+                        if (cursor != null)
+                            cursor.close();
+                    }
                 }
 
                 Intent intent = new Intent();
                 intent.putExtra(MainActivity.INTENT_EVENT_PARAM, localEvent);
                 intent.getIntExtra(MainActivity.INTENT_POSITION_PARAM, position);
-                if (event == null) {
-                    setResult(MainActivity.REQUEST_CODE_ADD);
-                } else setResult(MainActivity.REQUEST_CODE_UPDATE);
+
+                setResult(RESULT_OK, intent);
+
                 finish();
             }
         });

@@ -26,9 +26,10 @@ public class EventsInflator {
     private static Event createEventFromCursor(Cursor cursor) {
         Event event = new Event();
         event.setId(getLong(cursor, CalendarContract.Events._ID));
-        event.setCalendarId(getInt(cursor, CalendarContract.Events.CALENDAR_ID));
-        event.setDateStart(getInt(cursor, CalendarContract.Events.DTSTART));
-        event.setDateEnd(getInt(cursor, CalendarContract.Events.DTEND));
+        event.setCalendarId(getLong(cursor, CalendarContract.Events.CALENDAR_ID));
+        event.setDateStart(getLong(cursor, CalendarContract.Events.DTSTART));
+        event.setDateEnd(getLong(cursor, CalendarContract.Events.DTEND));
+        event.setTimeZone(getString(cursor,CalendarContract.Events.EVENT_TIMEZONE));
         event.setTitle(getString(cursor, CalendarContract.Events.TITLE));
         event.setDescription(getString(cursor, CalendarContract.Events.DESCRIPTION));
         return event;
@@ -40,9 +41,5 @@ public class EventsInflator {
 
     private static String getString(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));
-    }
-
-    private static int getInt(Cursor cursor, String columnName) {
-        return cursor.getInt(cursor.getColumnIndex(columnName));
     }
 }
