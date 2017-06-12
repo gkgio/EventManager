@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">EventManager</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="image_description">image SplashActivity</string>
+    <string name="nav_header_image">nav header image</string>
+    <string name="toast_error_message">Мез разрешения не работает!</string>
+    <string name="dialog_what_action_event">Изменить запись?</string>
+    <string name="dialog_delete">Удалить</string>
+    <string name="dialog_update">Изменить</string>
+    <string name="dialog_nothing">Отмена</string>
+</resources>

@@ -1,0 +1,10 @@
+syntax: glob
+EventManager.iml
+gradlew
+gradlew.bat
+local.properties
+build
+gradle
+.idea
+.gradle
+app/app.iml
