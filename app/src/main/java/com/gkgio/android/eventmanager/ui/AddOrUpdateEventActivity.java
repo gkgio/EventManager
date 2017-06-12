@@ -80,15 +80,17 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
         }
 
         final Calendar calendarFrom = Calendar.getInstance(TimeZone.getDefault());
-        //текущая дата и на сутки раньше по умолчанию
+        //текущая дата и на сутки позже по умолчанию
         if (event == null) {
-            tvCalendarFromDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", calendarFrom.getTimeInMillis() - 86400000));
-            tvCalendarToDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", calendarFrom.getTimeInMillis()));
+            tvCalendarFromDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", calendarFrom.getTimeInMillis()));
+            tvCalendarToDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", calendarFrom.getTimeInMillis() + 86400000));
 
-            calendarFrom.setTimeInMillis(calendarFrom.getTimeInMillis() - 86400000);
+            calendarFrom.setTimeInMillis(calendarFrom.getTimeInMillis());
 
             dateTimeFrom = calendarFrom.getTimeInMillis();
         } else {
+            etTitle.setText(event.getTitle());
+            etDescription.setText(event.getDescription());
             tvCalendarFromDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", event.getDateStart()));
             tvCalendarToDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", event.getDateEnd()));
 
@@ -122,6 +124,7 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
         final Calendar calendarTo = Calendar.getInstance(TimeZone.getDefault());
 
         if (event == null) {
+            calendarTo.setTimeInMillis(calendarFrom.getTimeInMillis() + 86400000);
             dateTimeTo = calendarTo.getTimeInMillis();
         } else {
             calendarTo.setTimeInMillis(event.getDateEnd());
@@ -156,11 +159,12 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
                 Event localEvent = new Event();
                 localEvent.setTitle(etTitle.getText().toString());
                 localEvent.setDescription(etDescription.getText().toString());
-                localEvent.setDateStart((int) dateTimeFrom);
-                localEvent.setDateEnd((int) dateTimeTo);
+                localEvent.setDateStart(dateTimeFrom);
+                localEvent.setDateEnd(dateTimeTo);
                 if (event != null) {
                     localEvent.setId(event.getId());
                     localEvent.setCalendarId(event.getCalendarId());
+                    localEvent.setTimeZone(event.getTimeZone());
                 } else {
                     TimeZone timeZone = TimeZone.getDefault();
                     String timeZoneID = timeZone.getID();
@@ -189,10 +193,8 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent.putExtra(MainActivity.INTENT_EVENT_PARAM, localEvent);
-                intent.getIntExtra(MainActivity.INTENT_POSITION_PARAM, position);
-
+                intent.putExtra(MainActivity.INTENT_POSITION_PARAM, position);
                 setResult(RESULT_OK, intent);
-
                 finish();
             }
         });

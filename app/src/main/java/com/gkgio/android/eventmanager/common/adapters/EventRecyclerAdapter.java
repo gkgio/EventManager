@@ -86,7 +86,6 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     }
 
     public void updateEvent(Event event, int position) {
-        eventList.clear();
         eventList.set(position, event);
         notifyDataSetChanged();
     }

@@ -218,9 +218,10 @@ public class MainActivity extends AppCompatActivity
                 }
             } else if (requestCode == REQUEST_CODE_UPDATE) {
                 if (data != null) {
-                    final Event event =(Event) data.getSerializableExtra(INTENT_EVENT_PARAM);
-                    eventRecyclerAdapter.updateEvent(event,
-                            data.getIntExtra(INTENT_POSITION_PARAM, -1));
+                    final Event event = (Event) data.getSerializableExtra(INTENT_EVENT_PARAM);
+                    final int position = data.getIntExtra(INTENT_POSITION_PARAM, -1);
+                    eventRecyclerAdapter.updateEvent(event, position);
+                    updateEvent(event);
                 }
             }
         }
@@ -239,6 +240,21 @@ public class MainActivity extends AppCompatActivity
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
             resolver.insert(CalendarContract.Events.CONTENT_URI, values);
+        }
+    }
+
+    private void updateEvent(Event event) {
+        ContentResolver resolver = this.getContentResolver();
+        ContentValues values = new ContentValues();
+
+        values.put(CalendarContract.Events.DTSTART, event.getDateStart());
+        values.put(CalendarContract.Events.DTEND, event.getDateEnd());
+        values.put(CalendarContract.Events.TITLE, event.getTitle());
+        values.put(CalendarContract.Events.DESCRIPTION, event.getDescription());
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+            resolver.update(CalendarContract.Events.CONTENT_URI, values, CalendarContract.Events._ID + " = ?",
+                    new String[]{String.valueOf(event.getId())});
         }
     }
 
