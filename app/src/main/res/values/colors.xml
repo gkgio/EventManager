@@ -5,7 +5,6 @@
     <color name="colorAccent">#48c47b</color>
     <color name="red">#F44336</color>
     <color name="darkGray">#6a6a82</color>
-    <color name="colorDivider">#e7a8a3</color>
     <color name="btnPressed">#4CAF50</color>
     <color name="lightGray">#C8E6C9</color>
 </resources>

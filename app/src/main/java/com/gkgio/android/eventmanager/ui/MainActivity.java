@@ -44,11 +44,11 @@ public class MainActivity extends AppCompatActivity
     private static final int PERMISSION_READ_REQUEST_CODE = 1;
     private static final int PERMISSION_WRITE_REQUEST_CODE = 1;
     private static final int LOADER_ID = 1;
+    private static final int REQUEST_CODE_UPDATE = 12;
+    private static final int REQUEST_CODE_ADD = 143;
 
     public static final String INTENT_EVENT_PARAM = "Event";
     public static final String INTENT_POSITION_PARAM = "Position";
-    public static final int REQUEST_CODE_UPDATE = 12;
-    public static final int REQUEST_CODE_ADD = 143;
 
     private EventRecyclerAdapter eventRecyclerAdapter;
 
