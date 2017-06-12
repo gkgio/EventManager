@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showToast(int message) {
-
         LayoutInflater inflater = getLayoutInflater();
 
         View toastView = inflater.inflate(R.layout.toast, (ViewGroup) findViewById(R.id.toast_layout_root));
@@ -215,7 +214,9 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onLoadFinished(Loader<List<Event>> loader, List<Event> data) {
-
+            if(data!=null){
+                eventRecyclerAdapter.setEvents(data);
+            }
         }
 
         @Override
