@@ -12,4 +12,6 @@
     <string name="dialog_delete">Удалить</string>
     <string name="dialog_update">Изменить</string>
     <string name="dialog_nothing">Отмена</string>
+    <string name="title_activity_new_event">Новая запись</string>
+    <string name="title_activity_update_event">Редактирование</string>
 </resources>
