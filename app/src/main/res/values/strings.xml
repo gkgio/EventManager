@@ -14,4 +14,11 @@
     <string name="dialog_nothing">Отмена</string>
     <string name="title_activity_new_event">Новая запись</string>
     <string name="title_activity_update_event">Редактирование</string>
+    <string name="calendar_to">по</string>
+    <string name="calendar_from">с</string>
+    <string name="tv_event_title">Заголовок</string>
+    <string name="hint_event_title">Заголовок</string>
+    <string name="hint_event_description">Описание</string>
+    <string name="tv_event_description">Описание</string>
+    <string name="btn_save_event">Сохранить</string>
 </resources>

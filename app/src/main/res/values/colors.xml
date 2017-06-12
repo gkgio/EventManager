@@ -7,4 +7,5 @@
     <color name="darkGray">#6a6a82</color>
     <color name="colorDivider">#1F000000</color>
     <color name="btnPressed">#4CAF50</color>
+    <color name="lightGray">#C8E6C9</color>
 </resources>

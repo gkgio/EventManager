@@ -1,7 +1,7 @@
 package com.gkgio.android.eventmanager.common;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -11,9 +11,11 @@ import java.util.Locale;
 
 public class Utils {
 
-    public static String getStringDateFromLong(int time) {
-        Date date = new Date(time);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        return simpleDateFormat.format(date);
+    public static String formatDateTime(String format, long timestamp) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        final String formattedDate = dateFormat.format(new Timestamp(timestamp));
+
+        // возвращаем с заглавной первой буквой в дне недели
+        return formattedDate.substring(0, 1).toUpperCase() + formattedDate.substring(1);
     }
 }

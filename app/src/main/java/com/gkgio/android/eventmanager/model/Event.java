@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class Event implements Serializable {
 
     private long id;
+    private int calendarId;
     private String title;
     private String description;
     private int dateStart;
@@ -26,6 +27,7 @@ public class Event implements Serializable {
         Event event = (Event) o;
 
         if (id != event.id) return false;
+        if (calendarId != event.calendarId) return false;
         if (dateStart != event.dateStart) return false;
         if (dateEnd != event.dateEnd) return false;
         if (title != null ? !title.equals(event.title) : event.title != null) return false;
@@ -36,6 +38,7 @@ public class Event implements Serializable {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + calendarId;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + dateStart;
@@ -47,6 +50,7 @@ public class Event implements Serializable {
     public String toString() {
         return "Event{" +
                 "id=" + id +
+                ", calendarId=" + calendarId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", dateStart=" + dateStart +
@@ -75,6 +79,10 @@ public class Event implements Serializable {
         this.dateEnd = dateEnd;
     }
 
+    public void setCalendarId(int calendarId) {
+        this.calendarId = calendarId;
+    }
+
     public long getId() {
         return id;
     }
@@ -93,5 +101,9 @@ public class Event implements Serializable {
 
     public int getDateEnd() {
         return dateEnd;
+    }
+
+    public int getCalendarId() {
+        return calendarId;
     }
 }

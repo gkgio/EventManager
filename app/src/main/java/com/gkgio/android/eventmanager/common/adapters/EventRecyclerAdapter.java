@@ -38,20 +38,20 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(CategoryItemViewHolder holder, final int position) {
+    public void onBindViewHolder(final CategoryItemViewHolder holder, final int position) {
 
         final Event event = eventList.get(position);
         final Context context = refContext.get();
 
         if (context != null) {
-            holder.tvDate.setText(Utils.getStringDateFromLong(event.getDateStart()));
+            holder.tvDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", event.getDateStart()));
             holder.tvTitle.setText(event.getTitle());
             holder.tvDescription.setText(event.getDescription());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity) context).editEvent(event, position);
+                    ((MainActivity) context).editEvent(event, holder.getAdapterPosition());
                 }
             });
         }

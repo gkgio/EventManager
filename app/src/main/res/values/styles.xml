@@ -30,4 +30,7 @@
         <item name="android:textSize">@dimen/text_size_recycler</item>
     </style>
 
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/lightGray</item>
+    </style>
 </resources>
