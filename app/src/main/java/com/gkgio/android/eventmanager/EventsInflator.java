@@ -26,6 +26,7 @@ public class EventsInflator {
     private static Event createEventFromCursor(Cursor cursor) {
         Event event = new Event();
         event.setId(getLong(cursor, CalendarContract.Events._ID));
+        event.setCalendarId(getInt(cursor, CalendarContract.Events.CALENDAR_ID));
         event.setDateStart(getInt(cursor, CalendarContract.Events.DTSTART));
         event.setDateEnd(getInt(cursor, CalendarContract.Events.DTEND));
         event.setTitle(getString(cursor, CalendarContract.Events.TITLE));

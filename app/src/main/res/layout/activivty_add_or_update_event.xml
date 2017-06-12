@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.gkgio.android.eventmanager.ui.AddOrUpdateEventActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:theme="@style/ToolbarStyle" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -156,5 +166,6 @@
         android:layout_gravity="end"
         android:layout_margin="32dp"
         android:background="@drawable/button_selector"
+        android:enabled="false"
         android:text="@string/btn_save_event" />
 </LinearLayout>

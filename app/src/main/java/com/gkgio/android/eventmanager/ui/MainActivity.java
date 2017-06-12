@@ -2,10 +2,13 @@ package com.gkgio.android.eventmanager.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -39,7 +42,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int PERMISSION_READ_REQUEST_CODE = 1;
+    private static final int PERMISSION_WRITE_REQUEST_CODE = 1;
     private static final int LOADER_ID = 1;
 
     public static final String INTENT_EVENT_PARAM = "Event";
@@ -86,11 +90,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if ((ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) &&
-                    (ActivityCompat.checkSelfPermission(this,
-                            Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED)) {
+        if (requestCode == PERMISSION_READ_REQUEST_CODE) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
                 getSupportLoaderManager().initLoader(LOADER_ID, null,
                         new CalendarEventsLoaderCallBack());
             } else showToast(R.string.toast_error_message);
@@ -108,8 +110,11 @@ public class MainActivity extends AppCompatActivity
                     new CalendarEventsLoaderCallBack());
         } else {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CALL_LOG},
-                    PERMISSION_REQUEST_CODE);
+                    new String[]{Manifest.permission.READ_CALENDAR},
+                    PERMISSION_READ_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_CALENDAR},
+                    PERMISSION_WRITE_REQUEST_CODE);
         }
     }
 
@@ -185,7 +190,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void deleteEvent(Event event) {
-        eventRecyclerAdapter.deleteEvent(event);
+        //eventRecyclerAdapter.deleteEvent(event);
+       final String[] selectionArgs = new String[]{Long.toString(event.getId())};
+        ContentResolver contentResolver = this.getContentResolver();
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+            contentResolver.delete(
+                    CalendarContract.Events.CONTENT_URI,
+                    CalendarContract.Events._ID + " = ? ",
+                    selectionArgs
+            );
+        }
     }
 
     private void startAddOrUpdateEventActivity() {
@@ -197,11 +212,30 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD) {
-                eventRecyclerAdapter.setEvent((Event) data.getSerializableExtra(INTENT_EVENT_PARAM));
+                // eventRecyclerAdapter.setEvent((Event) data.getSerializableExtra(INTENT_EVENT_PARAM));
+                if (data != null) {
+                    final Event event = (Event) data.getSerializableExtra(INTENT_EVENT_PARAM);
+                    insertEvent(event);
+                }
             } else if (requestCode == REQUEST_CODE_UPDATE) {
                 eventRecyclerAdapter.updateEvent((Event) data.getSerializableExtra(INTENT_EVENT_PARAM),
                         data.getIntExtra(INTENT_POSITION_PARAM, -1));
             }
+        }
+    }
+
+    private void insertEvent(Event event) {
+        ContentResolver resolver = this.getContentResolver();
+        ContentValues values = new ContentValues();
+
+        values.put(CalendarContract.Events.DTSTART, event.getDateStart());
+        values.put(CalendarContract.Events.DTEND, event.getDateEnd());
+        values.put(CalendarContract.Events.TITLE, event.getTitle());
+        values.put(CalendarContract.Events.CALENDAR_ID, event.getCalendarId());
+        values.put(CalendarContract.Events.DESCRIPTION, event.getDescription());
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+            resolver.insert(CalendarContract.Events.CONTENT_URI, values);
         }
     }
 
@@ -214,7 +248,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onLoadFinished(Loader<List<Event>> loader, List<Event> data) {
-            if(data!=null){
+            if (data != null) {
                 eventRecyclerAdapter.setEvents(data);
             }
         }

@@ -33,4 +33,9 @@
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="colorControlNormal">@color/lightGray</item>
     </style>
+
+    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
 </resources>

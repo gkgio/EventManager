@@ -4,11 +4,13 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -46,9 +48,14 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activivty_add_or_update_event);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         event = (Event) getIntent().getSerializableExtra(MainActivity.INTENT_EVENT_PARAM);
         position = getIntent().getIntExtra(MainActivity.INTENT_POSITION_PARAM, -1);
@@ -60,6 +67,7 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
         btnSave = (Button) findViewById(R.id.btnSave);
 
         editTexts = new EditText[]{etTitle, etDescription};
+
         for (EditText editText : editTexts) {
             editText.addTextChangedListener(new TextWatcherImpl());
         }
@@ -79,6 +87,7 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
 
             calendarFrom.setTimeInMillis(event.getDateStart());
             dateTimeFrom = event.getDateStart();
+            btnSave.setEnabled(true);
         }
 
         DatePickerDialog.OnDateSetListener dateListenerFrom = new DatePickerDialog.OnDateSetListener() {
@@ -142,8 +151,10 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
                 localEvent.setDescription(etDescription.getText().toString());
                 localEvent.setDateStart((int) dateTimeFrom);
                 localEvent.setDateEnd((int) dateTimeTo);
-                localEvent.setId(event.getId());
-                localEvent.setCalendarId(event.getCalendarId());
+                if (event != null) {
+                    localEvent.setId(event.getId());
+                    localEvent.setCalendarId(event.getCalendarId());
+                }
 
                 Intent intent = new Intent();
                 intent.putExtra(MainActivity.INTENT_EVENT_PARAM, localEvent);
@@ -151,6 +162,7 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
                 if (event == null) {
                     setResult(MainActivity.REQUEST_CODE_ADD);
                 } else setResult(MainActivity.REQUEST_CODE_UPDATE);
+                finish();
             }
         });
     }
@@ -161,6 +173,13 @@ public class AddOrUpdateEventActivity extends AppCompatActivity {
         if (event == null)
             toolbar.setTitle(R.string.title_activity_new_event);
         else toolbar.setTitle(R.string.title_activity_update_event);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // при нажатии на кнопку Назад - закрываем  текущую активити
+        if (item.getItemId() == android.R.id.home) finish();
+        return super.onOptionsItemSelected(item);
     }
 
     private class TextWatcherImpl implements TextWatcher {
