@@ -7,18 +7,24 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/tvDate"
-        style="@style/TextStyle"
+        android:id="@+id/tvDateFrom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Вторник 12.05.2017" />
+        android:textColor="@color/darkGreen"
+        android:textSize="12sp"
+        android:textStyle="normal|bold"
+        tools:text="Начало Вт. 12.05.2017" />
 
     <TextView
         android:id="@+id/tvTitle"
-        style="@style/TextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         tools:text="Title" />
 
@@ -29,6 +35,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:maxLines="3"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
         tools:text="Description" />
+
+    <TextView
+        android:id="@+id/tvDateTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/darkGreen"
+        android:textSize="12sp"
+        android:textStyle="normal|bold"
+        tools:text="Конец Вт. 12.05.2017" />
 
 </LinearLayout>

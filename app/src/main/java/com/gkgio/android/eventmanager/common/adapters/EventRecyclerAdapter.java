@@ -44,7 +44,10 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         final Context context = refContext.get();
 
         if (context != null) {
-            holder.tvDate.setText(Utils.formatDateTime("EEE, d MMM yyyy", event.getDateStart()));
+            holder.tvDateFrom.setText(holder.itemView.getContext().
+                    getString(R.string.date_from_filter, Utils.formatDateTime("EEE, d MMM yyyy", event.getDateStart())));
+            holder.tvDateTo.setText(holder.itemView.getContext().
+                    getString(R.string.date_to_filter, Utils.formatDateTime("EEE, d MMM yyyy", event.getDateEnd())));
             holder.tvTitle.setText(event.getTitle());
             holder.tvDescription.setText(event.getDescription());
 
@@ -92,13 +95,15 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
     class CategoryItemViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView tvDate;
+        final TextView tvDateFrom;
+        final TextView tvDateTo;
         final TextView tvTitle;
         final TextView tvDescription;
 
         public CategoryItemViewHolder(View itemView) {
             super(itemView);
-            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
+            tvDateFrom = (TextView) itemView.findViewById(R.id.tvDateFrom);
+            tvDateTo = (TextView) itemView.findViewById(R.id.tvDateTo);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
         }

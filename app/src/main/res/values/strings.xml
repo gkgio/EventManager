@@ -22,4 +22,6 @@
     <string name="btn_save_event">Сохранить</string>
     <string name="nav_about_app">About app</string>
     <string name="nav_exit">Exit</string>
+    <string name="date_from_filter">Начало %1$s</string>
+    <string name="date_to_filter">Конец %1$s</string>
 </resources>

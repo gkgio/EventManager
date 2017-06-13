@@ -64,7 +64,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:hint="@string/hint_event_description"
-        android:inputType="textCapSentences"
+        android:inputType="textCapSentences|textMultiLine"
         android:maxLength="128"
         android:maxLines="3"
         android:minLines="2" />
