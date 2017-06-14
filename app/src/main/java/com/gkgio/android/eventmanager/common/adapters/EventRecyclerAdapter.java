@@ -1,6 +1,5 @@
 package com.gkgio.android.eventmanager.common.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import com.gkgio.android.eventmanager.common.Utils;
 import com.gkgio.android.eventmanager.model.Event;
 import com.gkgio.android.eventmanager.ui.MainActivity;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +22,8 @@ import java.util.List;
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.CategoryItemViewHolder> {
 
     private final List<Event> eventList;
-    private final WeakReference<Context> refContext;
 
-    public EventRecyclerAdapter(Context context) {
-        refContext = new WeakReference<>(context);
+    public EventRecyclerAdapter() {
         eventList = new ArrayList<>();
     }
 
@@ -41,23 +37,20 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     public void onBindViewHolder(final CategoryItemViewHolder holder, final int position) {
 
         final Event event = eventList.get(position);
-        final Context context = refContext.get();
 
-        if (context != null) {
-            holder.tvDateFrom.setText(holder.itemView.getContext().
-                    getString(R.string.date_from_filter, Utils.formatDateTime("EEE, d MMM yyyy", event.getDateStart())));
-            holder.tvDateTo.setText(holder.itemView.getContext().
-                    getString(R.string.date_to_filter, Utils.formatDateTime("EEE, d MMM yyyy", event.getDateEnd())));
-            holder.tvTitle.setText(event.getTitle());
-            holder.tvDescription.setText(event.getDescription());
+        holder.tvDateFrom.setText(holder.itemView.getContext().
+                getString(R.string.date_from_filter, Utils.formatDateTime("EEE, d MMM yyyy", event.getDateStart())));
+        holder.tvDateTo.setText(holder.itemView.getContext().
+                getString(R.string.date_to_filter, Utils.formatDateTime("EEE, d MMM yyyy", event.getDateEnd())));
+        holder.tvTitle.setText(event.getTitle());
+        holder.tvDescription.setText(event.getDescription());
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainActivity) context).editEvent(event, holder.getAdapterPosition());
-                }
-            });
-        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) holder.itemView.getContext()).editEvent(event, holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override

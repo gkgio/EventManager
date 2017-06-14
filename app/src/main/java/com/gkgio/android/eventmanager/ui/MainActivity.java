@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         checkCallLogPermission();
 
-        eventRecyclerAdapter = new EventRecyclerAdapter(this);
+        eventRecyclerAdapter = new EventRecyclerAdapter();
         RecyclerView rvEvents = (RecyclerView) findViewById(R.id.rvEvents);
         rvEvents.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
